@@ -1,2 +1,3 @@
+include ':recognition-sdk'
 include ':app'
 rootProject.name = "Recognition"
