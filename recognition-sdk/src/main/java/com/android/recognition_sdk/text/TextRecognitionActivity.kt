@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.android.CameraXViewModel
 import com.android.recognition_sdk.databinding.ActivityTextRecognitionBinding
+import com.android.utils.PermissionUtils
 
 /**
  * Internal Text Recognition activity that is accessible just
@@ -15,6 +16,8 @@ internal class TextRecognitionActivity : AppCompatActivity(),
     ActivityCompat.OnRequestPermissionsResultCallback {
 
     private lateinit var binding: ActivityTextRecognitionBinding
+    private val textRecognitionProcessor: TextRecognitionProcessor =
+        TextRecognitionProcessorImpl(this, this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +31,11 @@ internal class TextRecognitionActivity : AppCompatActivity(),
     }
 
     private fun init() {
-        setupViewModel()
+        if (PermissionUtils.allPermissionsGranted(this)) {
+            setupViewModel()
+        } else {
+            PermissionUtils.getRuntimePermissions(this)
+        }
     }
 
     private fun setupViewModel() {
@@ -50,6 +57,20 @@ internal class TextRecognitionActivity : AppCompatActivity(),
         }
     }
 
+    /************************ Permissions ************************/
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (PermissionUtils.allPermissionsGranted(this)) {
+            setupViewModel()
+        } else {
+            // Return failure
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
 }
 
