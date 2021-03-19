@@ -2,4 +2,6 @@
 <resources>
     <string name="take_picture">Take Picture</string>
     <string name="permission_not_granted">Permission Not Granted</string>
+    <string name="loading">Please wait! Loading ...</string>
+    <string name="could_not_find_anything">Couldn\'t find anything in picture</string>
 </resources>

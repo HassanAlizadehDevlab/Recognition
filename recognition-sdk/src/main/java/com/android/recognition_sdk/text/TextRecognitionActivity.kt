@@ -1,12 +1,17 @@
 package com.android.recognition_sdk.text
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.android.CameraXViewModel
+import com.android.recognition_sdk.R
 import com.android.recognition_sdk.databinding.ActivityTextRecognitionBinding
 import com.android.utils.PermissionUtils
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Internal Text Recognition activity that is accessible just
@@ -16,7 +21,7 @@ internal class TextRecognitionActivity : AppCompatActivity(),
     ActivityCompat.OnRequestPermissionsResultCallback {
 
     private lateinit var binding: ActivityTextRecognitionBinding
-    private val textRecognitionProcessor: TextRecognitionProcessor =
+    private val textRecognition: TextRecognitionProcessor =
         TextRecognitionProcessorImpl(this, this)
 
 
@@ -47,14 +52,60 @@ internal class TextRecognitionActivity : AppCompatActivity(),
             .observe(
                 this
             ) { provider ->
-                // set call TextRecognition class to setup camera
+                textRecognition.setupCamera(provider, binding.previewView)
             }
     }
 
     private fun setupClickListeners() {
         binding.buttonTakePicture.setOnClickListener {
-            // Take photo
+
+            textRecognition.takePicture().also {
+                observeTakingPictureResult(it)
+            }
         }
+    }
+
+    private fun observeTakingPictureResult(liveData: LiveData<TextRecognitionResultInternal>) {
+        liveData.observe(this) { response ->
+            when (response) {
+                is TextRecognitionResultInternal.Success -> {
+                    Log.d(TAG, "Text Recognition succeed")
+                    returnSuccess(response.data)
+                }
+                is TextRecognitionResultInternal.Error -> {
+                    Log.d(TAG, "Text Recognition failed")
+
+                    response.message?.let {
+                        showMessage(it)
+                    }
+                }
+                TextRecognitionResultInternal.Loading -> {
+                    Log.d(TAG, "Text Recognition loading")
+
+                    Snackbar.make(binding.root, getString(R.string.loading), Snackbar.LENGTH_LONG)
+                        .show()
+                }
+            }
+        }
+    }
+
+
+    private fun returnSuccess(data: String) {
+        TextRecognition.getSuccessResultIntent(data).also {
+            setResult(Activity.RESULT_OK, it)
+            finish()
+        }
+    }
+
+    private fun returnFailed(error: String) {
+        TextRecognition.getErrorResultIntent(error).also {
+            setResult(Activity.RESULT_OK, it)
+            finish()
+        }
+    }
+
+    private fun showMessage(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
     /************************ Permissions ************************/
@@ -66,10 +117,14 @@ internal class TextRecognitionActivity : AppCompatActivity(),
         if (PermissionUtils.allPermissionsGranted(this)) {
             setupViewModel()
         } else {
-            // Return failure
+            returnFailed(getString(R.string.permission_not_granted))
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    companion object {
+        private val TAG = TextRecognitionActivity::class.simpleName
     }
 
 }
