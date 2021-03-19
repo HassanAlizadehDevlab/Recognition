@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "625329971889",
+    "project_id": "text-recognition-50944",
+    "storage_bucket": "text-recognition-50944.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625329971889:android:3fabc6961367e597ca7890",
+        "android_client_info": {
+          "package_name": "com.android.text_recognition_sdk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625329971889-6636g8ngr5q808s5l8cmetnb79glpibc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.text_recognition_sdk",
+            "certificate_hash": "d4bb8e3ea9d42c9c34c816e62a9deb8aca719446"
+          }
+        },
+        {
+          "client_id": "625329971889-r31bpgjgdfl2uvq5aug7lgud1l6j5n3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVs5MIdvKeWJ6c3QOzUZlF0hHXcaZo6XQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625329971889-r31bpgjgdfl2uvq5aug7lgud1l6j5n3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

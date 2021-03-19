@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.android.recognition_sdk.R
-import com.android.recognition_sdk.databinding.ActivityTextRecognitionBinding
+import com.android.text_recognition_sdk.R
+import com.android.text_recognition_sdk.databinding.ActivityTextRecognitionBinding
 import com.android.utils.PermissionUtils
 import com.google.android.material.snackbar.Snackbar
 
