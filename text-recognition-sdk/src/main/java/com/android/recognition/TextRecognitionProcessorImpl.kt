@@ -1,4 +1,4 @@
-package com.android.recognition_sdk.text
+package com.android.recognition
 
 import android.content.Context
 import android.net.Uri

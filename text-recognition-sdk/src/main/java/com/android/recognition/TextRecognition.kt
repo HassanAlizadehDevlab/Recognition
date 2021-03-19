@@ -1,4 +1,4 @@
-package com.android.recognition_sdk.text
+package com.android.recognition
 
 import android.content.Intent
 import android.os.Parcelable

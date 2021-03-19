@@ -1,4 +1,4 @@
-package com.android.recognition_sdk.text
+package com.android.recognition
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.android.CameraXViewModel
 import com.android.recognition_sdk.R
 import com.android.recognition_sdk.databinding.ActivityTextRecognitionBinding
 import com.android.utils.PermissionUtils
