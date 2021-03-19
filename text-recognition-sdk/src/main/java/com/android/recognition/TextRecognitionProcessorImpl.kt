@@ -1,7 +1,6 @@
 package com.android.recognition
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -43,15 +42,14 @@ internal class TextRecognitionProcessorImpl constructor(
         }
 
         override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-            val savedUri =
-                Uri.fromFile(File("/storage/emulated/0/Download/6043352_032320-cc-ap-real-id-sample-img.jpg"))!!
-
             try {
-                with(InputImage.fromFilePath(context, savedUri)) {
+                with(InputImage.fromFilePath(context, output.savedUri!!)) {
                     detectTexts(this)
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
+
+                textRecognitionObservable.value = TextRecognitionResultInternal.Error(e.message)
             }
         }
 
