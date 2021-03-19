@@ -1,5 +1,6 @@
 package com.android.recognition
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -10,6 +11,27 @@ import kotlinx.android.parcel.Parcelize
 object TextRecognition {
 
     private const val TEXT_RECOGNITION_DATA = "data"
+
+
+    /**
+     * This method call from Host app to get an intent for opening [TextRecognitionActivity] page.
+     *
+     * @param context of Host app current page.
+     * @return an intent to open [TextRecognitionActivity].
+     * */
+    fun getIntent(context: Activity): Intent {
+        return Intent(context, TextRecognitionActivity::class.java)
+    }
+
+
+    /** A function to parse text recognition intent.
+     *
+     * @param intent is come from onActivityResult function to parse result.
+     * @return [TextRecognitionResult] is a sealed class for result of Text Recognition process.
+     * */
+    fun getResult(intent: Intent?): TextRecognitionResult? {
+        return intent?.extras?.get(TEXT_RECOGNITION_DATA) as? TextRecognitionResult
+    }
 
 
     /** Generate success intent for internal usage */
@@ -39,7 +61,6 @@ object TextRecognition {
 sealed class TextRecognitionResult : Parcelable {
     @Parcelize
     data class Success(val data: String) : TextRecognitionResult()
-
     @Parcelize
     data class Error(val message: String?) : TextRecognitionResult()
 }
