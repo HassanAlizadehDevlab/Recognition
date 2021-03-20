@@ -1,15 +1,19 @@
-package com.android.recognition
+package com.android.recognition.text_recognition
 
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import com.android.recognition.TextRecognitionSdk
+import com.android.recognition.utils.PermissionUtils
 import com.android.text_recognition_sdk.R
 import com.android.text_recognition_sdk.databinding.ActivityTextRecognitionBinding
-import com.android.utils.PermissionUtils
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -21,8 +25,15 @@ internal class TextRecognitionActivity : AppCompatActivity(),
 
     private lateinit var binding: ActivityTextRecognitionBinding
     private val textRecognition: TextRecognitionProcessor =
-        TextRecognitionProcessorImpl(this, this)
-
+        TextRecognitionProcessorImpl(
+            context = this,
+            lifecycleOwner = this,
+            preview = Preview.Builder().build(),
+            imageCapture = ImageCapture.Builder().build(),
+            cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,14 +101,14 @@ internal class TextRecognitionActivity : AppCompatActivity(),
 
 
     private fun returnSuccess(data: String) {
-        TextRecognition.getSuccessResultIntent(data).also {
+        TextRecognitionSdk.getSuccessResultIntent(data).also {
             setResult(Activity.RESULT_OK, it)
             finish()
         }
     }
 
     private fun returnFailed(error: String) {
-        TextRecognition.getErrorResultIntent(error).also {
+        TextRecognitionSdk.getErrorResultIntent(error).also {
             setResult(Activity.RESULT_OK, it)
             finish()
         }

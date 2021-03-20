@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
 
-        with(TextRecognition.getIntent(this)) {
+        with(TextRecognitionSdk.getIntent(this)) {
             startActivityForResult(this, TEXT_RECOGNITION_REQUEST)
         }
     }
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == TEXT_RECOGNITION_REQUEST) {
             if (resultCode == RESULT_OK)
-                TextRecognition.getResult(data)?.let { handleTextRecognitionResult(it) }
+                TextRecognitionSdk.getResult(data)?.let { handleTextRecognitionResult(it) }
             else Log.d(TAG, "Text recognition result is failed")
         }
 

@@ -1,4 +1,4 @@
-package com.android.recognition
+package com.android.recognition.text_recognition
 
 import android.content.Context
 import android.util.Log
@@ -12,8 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.android.recognition.utils.ImageUtils
 import com.android.text_recognition_sdk.R
-import com.android.utils.ImageUtils
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import java.io.File
@@ -25,15 +25,12 @@ import java.io.IOException
 internal class TextRecognitionProcessorImpl constructor(
     private val context: Context,
     private val lifecycleOwner: LifecycleOwner,
+    private val preview: Preview,
+    private val imageCapture: ImageCapture,
+    private val cameraSelector: CameraSelector,
 ) : TextRecognitionProcessor {
 
-    private val cameraSelector: CameraSelector =
-        CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
 
-    private val preview = Preview.Builder().build()
-    private val imageCapture = ImageCapture.Builder().build()
     private var cameraProvider: ProcessCameraProvider? = null
     private val textRecognitionObservable = MutableLiveData<TextRecognitionResultInternal>()
     private val onImageSavedCallback = object : ImageCapture.OnImageSavedCallback {

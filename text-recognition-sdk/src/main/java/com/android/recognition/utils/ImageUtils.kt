@@ -1,4 +1,4 @@
-package com.android.utils
+package com.android.recognition.utils
 
 import android.os.Environment
 

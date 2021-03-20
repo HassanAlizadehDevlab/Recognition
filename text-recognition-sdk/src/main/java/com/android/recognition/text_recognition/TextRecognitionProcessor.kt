@@ -1,4 +1,4 @@
-package com.android.recognition
+package com.android.recognition.text_recognition
 
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView

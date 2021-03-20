@@ -2,13 +2,12 @@ package com.android.recognition
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import com.android.recognition.text_recognition.TextRecognitionActivity
 
 /**
  * TextRecognition is a class for encapsulating text recognition usages between SDK and Host app.
  * */
-object TextRecognition {
+object TextRecognitionSdk {
 
     private const val TEXT_RECOGNITION_DATA = "data"
 
@@ -51,16 +50,4 @@ object TextRecognition {
             }
         }
     }
-
-}
-
-
-/**
- * Model class for response of text recognition
- * */
-sealed class TextRecognitionResult : Parcelable {
-    @Parcelize
-    data class Success(val data: String) : TextRecognitionResult()
-    @Parcelize
-    data class Error(val message: String?) : TextRecognitionResult()
 }
