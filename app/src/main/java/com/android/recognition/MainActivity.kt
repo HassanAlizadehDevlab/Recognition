@@ -18,9 +18,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
 
-        with(TextRecognitionSdk.getIntent(this)) {
-            startActivityForResult(this, TEXT_RECOGNITION_REQUEST)
-        }
+        setupClickListeners()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -32,6 +30,15 @@ class MainActivity : AppCompatActivity() {
             else Log.d(TAG, "Text recognition result is failed")
         }
 
+    }
+
+    private fun setupClickListeners() {
+        binding.buttonTextRecognition.setOnClickListener {
+
+            with(TextRecognitionSdk.getIntent(this)) {
+                startActivityForResult(this, TEXT_RECOGNITION_REQUEST)
+            }
+        }
     }
 
     private fun handleTextRecognitionResult(result: TextRecognitionResult) {

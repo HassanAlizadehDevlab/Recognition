@@ -1,6 +1,7 @@
 package com.android.recognition.text_recognition
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -20,8 +21,6 @@ import java.io.File
 import java.io.IOException
 
 
-// Document
-// Unit test
 internal class TextRecognitionProcessorImpl constructor(
     private val context: Context,
     private val lifecycleOwner: LifecycleOwner,
@@ -33,24 +32,6 @@ internal class TextRecognitionProcessorImpl constructor(
 
     private var cameraProvider: ProcessCameraProvider? = null
     private val textRecognitionObservable = MutableLiveData<TextRecognitionResultInternal>()
-    private val onImageSavedCallback = object : ImageCapture.OnImageSavedCallback {
-        override fun onError(exc: ImageCaptureException) {
-
-        }
-
-        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-            try {
-                with(InputImage.fromFilePath(context, output.savedUri!!)) {
-                    detectTexts(this)
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-
-                textRecognitionObservable.value = TextRecognitionResultInternal.Error(e.message)
-            }
-        }
-
-    }
 
 
     override fun setupCamera(
@@ -83,7 +64,25 @@ internal class TextRecognitionProcessorImpl constructor(
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(context),
-            onImageSavedCallback
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onError(exc: ImageCaptureException) {
+
+                }
+
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    try {
+                        val savedUri = Uri.fromFile(photoFile)
+                        with(InputImage.fromFilePath(context, savedUri)) {
+                            detectTexts(this)
+                        }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+
+                        textRecognitionObservable.value = TextRecognitionResultInternal.Error(e.message)
+                    }
+                }
+
+            }
         )
 
         textRecognitionObservable.value = TextRecognitionResultInternal.Loading
