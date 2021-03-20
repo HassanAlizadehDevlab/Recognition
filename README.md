@@ -5,11 +5,11 @@
 ## How to use it?
 * Add classpath 'com.google.gms:google-services:4.3.5' to the build.gradle file in root of the main project.
 * Then add this the Text Recognition SDK to your main project by "implementation project(':text-recognition-sdk')"
-* Now you can use this SDK by <b>TextRecognition</b> class. It is the only class that you have access to it.
-* Call <b>TextRecognition.getIntent(context)</b> to get the intent to TextRecognition Activity.
+* Now you can use this SDK by <b>TextRecognitionSdk</b> class. It is the only class that you have access to it.
+* Call <b>TextRecognitionSdk.getIntent(context)</b> to get the intent to TextRecognition Activity.
 
 
-        with(TextRecognition.getIntent(this)) {
+        with(TextRecognitionSdk.getIntent(this)) {
             startActivityForResult(this, TEXT_RECOGNITION_REQUEST)
         }
 
@@ -20,7 +20,7 @@
 
             if (requestCode == TEXT_RECOGNITION_REQUEST) {
                 if (resultCode == RESULT_OK)
-                    TextRecognition.getResult(data)?.let { handleTextRecognitionResult(it) }
+                    TextRecognitionSdk.getResult(data)?.let { handleTextRecognitionResult(it) }
                 else Log.d(TAG, "Text recognition result is failed")
             }
         }
